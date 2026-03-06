@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connection Ladder — Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { 200: '#ddd8d0', 500: '#94897b' },
+            accent: { 500: '#45836b', 600: '#356a56' },
+            surface: { DEFAULT: '#faf9f7', elevated: '#ffffff' },
+            ink: { DEFAULT: '#2a2622' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --color-surface: #faf9f7;
+      --color-ink: #2a2622;
+      --focus-ring: 2px solid #45836b;
+    }
+    body { background: var(--color-surface); color: var(--color-ink); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .skip-link { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .skip-link:focus { position: fixed; left: 1rem; top: 1rem; z-index: 100; padding: 0.5rem 1rem; background: #45836b; color: white; border-radius: 6px; width: auto; height: auto; overflow: visible; clip: auto; outline: var(--focus-ring); outline-offset: 2px; }
+    a:focus-visible, button:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
+    [data-page] { display: none; }
+    [data-page].active { display: block; }
+  </style>
+</head>
+<body class="antialiased font-sans">
+  <a href="#main-content" id="skip-link" class="skip-link">
+    Skip to main content
+  </a>
+
+  <header role="banner" class="border-b border-brand-200 bg-white">
+    <nav role="navigation" aria-label="Main navigation">
+      <ul class="flex gap-4 px-6 py-4">
+        <li><a href="#welcome" class="text-ink hover:text-accent-600 focus:outline focus:outline-2 focus:outline-accent-500 focus:outline-offset-2 rounded">Home</a></li>
+        <li><a href="#login" class="text-ink hover:text-accent-600 focus:outline focus:outline-2 focus:outline-accent-500 focus:outline-offset-2 rounded">Log In</a></li>
+        <li><a href="#signup" class="text-ink hover:text-accent-600 focus:outline focus:outline-2 focus:outline-accent-500 focus:outline-offset-2 rounded">Sign Up</a></li>
+        <li><a href="#onboarding" class="text-ink hover:text-accent-600 focus:outline focus:outline-2 focus:outline-accent-500 focus:outline-offset-2 rounded">Onboarding</a></li>
+        <li><a href="#dashboard" class="text-ink hover:text-accent-600 focus:outline focus:outline-2 focus:outline-accent-500 focus:outline-offset-2 rounded">Dashboard</a></li>
+        <li><a href="#challenge" class="text-ink hover:text-accent-600 focus:outline focus:outline-2 focus:outline-accent-500 focus:outline-offset-2 rounded">Challenge</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main-content" role="main" tabindex="-1" class="min-h-screen px-6 py-12">
+    <div data-page="welcome" class="active"><h1 class="text-2xl font-semibold text-ink">Welcome Page</h1></div>
+    <div data-page="signup"><h1 class="text-2xl font-semibold text-ink">Sign Up Page</h1></div>
+    <div data-page="login"><h1 class="text-2xl font-semibold text-ink">Log In Page</h1></div>
+    <div data-page="onboarding"><h1 class="text-2xl font-semibold text-ink">Onboarding Assessment</h1></div>
+    <div data-page="dashboard"><h1 class="text-2xl font-semibold text-ink">User Dashboard</h1></div>
+    <div data-page="challenge"><h1 class="text-2xl font-semibold text-ink">Active Challenge Page</h1></div>
+  </main>
+
+  <script>
+    const pages = document.querySelectorAll('[data-page]');
+    const show = (id) => {
+      pages.forEach(p => p.classList.toggle('active', p.dataset.page === id));
+    };
+    const hash = () => (location.hash || '#welcome').slice(1);
+    window.addEventListener('hashchange', () => show(hash()));
+    window.addEventListener('load', () => show(hash()));
+  </script>
+</body>
+</html>

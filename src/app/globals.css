@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Connection Ladder Design System — Calming, Minimalist, Line-Friendly */
+
+:root {
+  /* Brand palette */
+  --color-brand-50: #f7f6f4;
+  --color-brand-100: #edeae6;
+  --color-brand-200: #ddd8d0;
+  --color-brand-300: #c4bcb2;
+  --color-brand-500: #94897b;
+  --color-brand-900: #4f4740;
+  --color-brand-950: #2a2622;
+
+  /* Accent (natural green) */
+  --color-accent-100: #d9ebe3;
+  --color-accent-400: #649f84;
+  --color-accent-500: #45836b;
+  --color-accent-600: #356a56;
+
+  /* Surface & ink */
+  --color-surface: #faf9f7;
+  --color-surface-muted: #f5f3f0;
+  --color-ink: #2a2622;
+  --color-ink-muted: #60564d;
+
+  /* Focus ring — high contrast for accessibility */
+  --focus-ring: 2px solid var(--color-accent-500);
+  --focus-ring-offset: 2px;
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-surface text-ink antialiased;
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+  }
+
+  /* Accessible focus states — visible for keyboard navigation */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [tabindex]:focus-visible {
+    @apply outline-none;
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Hide scrollbar while keeping scroll — for horizontal badge row */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Visually hidden — for screen readers only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip link — becomes visible on focus */
+.skip-link {
+  @apply sr-only;
+  @apply fixed left-4 top-4 z-[100] px-4 py-2;
+  @apply bg-accent-500 text-white rounded-md font-medium;
+  @apply transition-all duration-150;
+}
+
+.skip-link:focus {
+  position: fixed;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}

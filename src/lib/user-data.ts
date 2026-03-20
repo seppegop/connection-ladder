@@ -10,12 +10,20 @@ export interface StoredLevel {
   score: number;
 }
 
+export interface ChallengeHistoryEntry {
+  challengeId: string;
+  title: string;
+  emoji: string;
+  timestamp: string; // ISO date string for JSON serialization
+}
+
 export interface UserProgress {
   name: string;
   email: string;
   level: StoredLevel | null;
   completedChallengeIds: string[];
   practiceLevels: number[];
+  challengeHistory: ChallengeHistoryEntry[];
 }
 
 export interface AllUsersData {
@@ -67,6 +75,7 @@ export function setCurrentUser(email: string): void {
       level: null,
       completedChallengeIds: [],
       practiceLevels: [],
+      challengeHistory: [],
     };
   }
   saveAllData(data);
@@ -82,6 +91,7 @@ export function createNewUser(name: string, email: string): void {
     level: null,
     completedChallengeIds: [],
     practiceLevels: [],
+    challengeHistory: [],
   };
   saveAllData(data);
 }
@@ -98,6 +108,7 @@ export function getCurrentUserProgress(): UserProgress | null {
   return {
     ...user,
     email,
+    challengeHistory: user.challengeHistory ?? [],
   };
 }
 
@@ -114,6 +125,7 @@ function updateCurrentUser(
     level: null,
     completedChallengeIds: [],
     practiceLevels: [],
+    challengeHistory: [],
   };
 
   data.users[email] = updater(existing);
@@ -154,6 +166,24 @@ export function addPracticeLevel(levelNumber: number): void {
       practiceLevels: [...u.practiceLevels, levelNumber],
     };
   });
+}
+
+export function addChallengeToHistory(entry: ChallengeHistoryEntry): void {
+  updateCurrentUser((u) => {
+    const history = u.challengeHistory ?? [];
+    return {
+      ...u,
+      challengeHistory: [
+        ...history,
+        { ...entry, timestamp: entry.timestamp },
+      ].slice(-20), // Keep last 20 entries
+    };
+  });
+}
+
+export function getChallengeHistory(): ChallengeHistoryEntry[] {
+  const progress = getCurrentUserProgress();
+  return progress?.challengeHistory ?? [];
 }
 
 /** Export user data as JSON (for backup/portability) */

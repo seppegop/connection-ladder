@@ -22,7 +22,7 @@ function clearCookie(name: string) {
 const QUESTIONS = [
   {
     id: 1,
-    text: "Welcome! When you think about interacting with new colleagues or classmates, how do you usually feel?",
+    text: "Welcome! When you think about interacting with new colleagues or classmates, what feels most like you?",
     options: [
       {
         label:
@@ -138,7 +138,7 @@ export default function OnboardingPage() {
       if (typeof window !== "undefined") {
         setUserLevel(payload);
       }
-      router.push("/dashboard");
+      router.push("/onboarding/results");
     } else {
       setCurrentIndex((i) => i + 1);
     }
@@ -151,15 +151,15 @@ export default function OnboardingPage() {
       <div className="w-full max-w-xl mx-auto">
         {/* Progress indicator */}
         <div className="mb-10" role="status" aria-live="polite">
-          <p className="text-sm text-ink-muted mb-2">
+          <p className="text-sm text-gray-700 font-semibold mb-2">
             Step {currentIndex + 1} of {QUESTIONS.length}
           </p>
           <div
-            className="h-1 w-full bg-brand-200 rounded-full overflow-hidden"
+            className="h-2 w-full bg-gray-200 rounded-full overflow-hidden border-2 border-black"
             aria-hidden
           >
             <div
-              className="h-full bg-accent-500 rounded-full transition-all duration-300 ease-out"
+              className="h-full bg-black rounded-full transition-all duration-300 ease-out"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -169,18 +169,19 @@ export default function OnboardingPage() {
         <div
           className="
             w-full max-w-xl mx-auto
-            rounded-lg
-            border-2 border-brand-200
-            bg-surface
-            shadow-soft
+            rounded-2xl
+            border-4 border-black
+            bg-white
+            shadow-neo-lg
             px-6 py-8
+            transition-all hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-neo-sm
           "
           role="region"
           aria-labelledby="question-heading"
         >
           <h2
             id="question-heading"
-            className="text-xl font-medium text-ink mb-6"
+            className="text-xl font-semibold tracking-tight text-black mb-6"
           >
             {question.text}
           </h2>
@@ -195,20 +196,20 @@ export default function OnboardingPage() {
                 className={`
                   w-full text-left
                   min-h-[80px] px-5 py-4
-                  rounded-lg
-                  border-2
+                  rounded-xl
+                  border-2 border-black
                   transition-all duration-150
-                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2
                   ${
                     selectedValue === opt.value
-                      ? "border-accent-500 bg-accent-50 text-ink shadow-soft"
-                      : "border-brand-300 bg-surface hover:border-brand-500 hover:bg-surface-muted text-ink"
+                      ? "bg-purple-200 text-black shadow-neo-sm"
+                      : "bg-white hover:bg-amber-100 text-black"
                   }
                 `}
                 aria-pressed={selectedValue === opt.value}
                 aria-label={opt.label}
               >
-                <span className="block text-[15px] leading-snug text-ink">
+                <span className="block text-[15px] leading-snug text-black font-medium">
                   {opt.label}
                 </span>
               </button>
@@ -222,14 +223,16 @@ export default function OnboardingPage() {
             className="
               w-full min-h-[52px] mt-8
               px-6 py-4
-              border-2 border-brand-400
-              bg-surface
-              text-ink font-medium
-              rounded-lg
-              transition-colors duration-150
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2
-              disabled:opacity-50 disabled:cursor-not-allowed
-              hover:enabled:border-accent-500 hover:enabled:bg-accent-50
+              border-2 border-black
+              bg-black text-white
+              font-semibold
+              rounded-xl
+              shadow-neo-sm
+              transition-all
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2
+              disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-x-0 disabled:hover:translate-y-0
+              hover:enabled:translate-x-[2px] hover:enabled:translate-y-[2px] hover:enabled:shadow-neo-xs
+              active:enabled:translate-x-[4px] active:enabled:translate-y-[4px] active:enabled:shadow-none
             "
           >
             {isLastQuestion ? "Finish" : "Next"}

@@ -81,7 +81,7 @@ export default function LogInPage() {
           <div className="mb-5 -mt-2">
             <Link
               href="/auth/forgot-password"
-              className="text-sm text-ink-muted hover:text-accent-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 rounded"
+              className="text-sm text-gray-700 hover:text-black font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded"
             >
               Forgot Password?
             </Link>
@@ -92,23 +92,25 @@ export default function LogInPage() {
             className="
               w-full min-h-[52px] mt-2
               px-6 py-4
-              border-2 border-brand-400
-              bg-surface
-              text-ink font-medium
-              rounded-lg
-              hover:border-accent-500 hover:bg-accent-50
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2
-              transition-colors duration-150
+              border-2 border-black
+              bg-black text-white
+              font-semibold
+              rounded-xl
+              shadow-neo-sm
+              transition-all
+              hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-neo-xs
+              active:translate-x-[4px] active:translate-y-[4px] active:shadow-none
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2
             "
           >
             Log In
           </button>
 
-          <p className="mt-6 text-center text-sm text-ink-muted">
+          <p className="mt-6 text-center text-sm text-gray-700">
             Don&apos;t have an account?{" "}
             <Link
               href="/auth/signup"
-              className="text-accent-600 hover:text-accent-700 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 rounded"
+              className="text-black font-semibold hover:underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded"
             >
               Sign up
             </Link>

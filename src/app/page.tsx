@@ -9,11 +9,11 @@ export default function WelcomePage() {
       >
         <h1
           id="welcome-heading"
-          className="text-3xl sm:text-4xl font-semibold text-ink mb-4"
+          className="text-3xl sm:text-4xl font-semibold tracking-tight text-black mb-4"
         >
           Connection Ladder
         </h1>
-        <p className="text-lg text-ink-muted mb-12 max-w-md mx-auto">
+        <p className="text-lg text-gray-700 mb-12 max-w-md mx-auto">
           Build social confidence at your own pace. Small steps, lasting
           connections.
         </p>
@@ -28,12 +28,15 @@ export default function WelcomePage() {
             className="
               min-h-[52px] px-8 py-4
               inline-flex items-center justify-center
-              border-2 border-brand-400
-              text-ink font-medium
-              rounded-lg
-              hover:border-accent-500 hover:text-accent-600
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2
-              transition-colors duration-150
+              border-2 border-black
+              bg-white text-black
+              font-semibold
+              rounded-xl
+              shadow-neo-sm
+              transition-all
+              hover:bg-amber-100 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-neo-xs
+              active:translate-x-[4px] active:translate-y-[4px] active:shadow-none
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2
             "
           >
             Log In
@@ -43,12 +46,15 @@ export default function WelcomePage() {
             className="
               min-h-[52px] px-8 py-4
               inline-flex items-center justify-center
-              border-2 border-brand-400
-              text-ink font-medium
-              rounded-lg
-              hover:border-accent-500 hover:text-accent-600
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2
-              transition-colors duration-150
+              border-2 border-black
+              bg-black text-white
+              font-semibold
+              rounded-xl
+              shadow-neo-sm
+              transition-all
+              hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-neo-xs
+              active:translate-x-[4px] active:translate-y-[4px] active:shadow-none
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2
             "
           >
             Sign Up

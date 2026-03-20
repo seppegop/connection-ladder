@@ -22,7 +22,7 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
       <div className="mb-5">
         <label
           htmlFor={id}
-          className="block text-sm font-medium text-ink mb-2"
+          className="block text-sm font-semibold text-black mb-2"
         >
           {label}
         </label>
@@ -34,15 +34,18 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
             hasError ? `${id}-error` : hint ? `${id}-hint` : undefined
           }
           className={`
-            w-full px-0 py-3
-            bg-transparent
-            border-0 border-b-2
-            text-ink placeholder:text-brand-400
-            transition-colors duration-150
+            w-full px-4 py-3
+            bg-white
+            border-2 border-black
+            rounded-xl
+            text-black placeholder:text-gray-500
+            shadow-neo-sm
+            transition-all duration-150
             min-h-[48px]
-            focus:outline-none focus:ring-0 focus:border-accent-500
-            disabled:opacity-60 disabled:cursor-not-allowed
-            ${hasError ? "border-accent-400" : "border-brand-300"}
+            focus:outline-none focus:ring-0 focus:border-black
+            hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-neo-xs
+            disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-neo-sm
+            ${hasError ? "border-rose-400" : ""}
             ${className}
           `}
           {...props}
@@ -51,13 +54,13 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
           <p
             id={`${id}-error`}
             role="alert"
-            className="mt-2 text-sm text-accent-600"
+            className="mt-2 text-sm text-rose-600 font-medium"
           >
             {error}
           </p>
         )}
         {hint && !error && (
-          <p id={`${id}-hint`} className="mt-2 text-sm text-ink-muted">
+          <p id={`${id}-hint`} className="mt-2 text-sm text-gray-700">
             {hint}
           </p>
         )}

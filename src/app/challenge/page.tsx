@@ -9,17 +9,15 @@ import {
   getCompletedChallengeIds,
   getFirstIncompleteChallenge,
   getCompletedCountForLevel,
-  markChallengeCompleted,
-  isFinalChallengeInLevel,
   isPracticeModeForLevel,
 } from "@/lib/challenge-utils";
 
 type DifficultyOption = "lighter" | "standard" | "harder";
 
 const DIFFICULTY_OPTIONS: { value: DifficultyOption; label: string }[] = [
-  { value: "lighter", label: "Lighter" },
-  { value: "standard", label: "Standard" },
-  { value: "harder", label: "Harder" },
+  { value: "lighter", label: "Easy" },
+  { value: "standard", label: "Medium" },
+  { value: "harder", label: "Hard" },
 ];
 
 function getChallengeText(challenge: Challenge, difficulty: DifficultyOption): string {
@@ -39,8 +37,6 @@ export default function ChallengePage() {
   const router = useRouter();
   const [activeChallenge, setActiveChallenge] = useState<Challenge | null>(null);
   const [difficulty, setDifficulty] = useState<DifficultyOption>("standard");
-  const [isCompleting, setIsCompleting] = useState(false);
-  const [showToast, setShowToast] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
@@ -68,36 +64,16 @@ export default function ChallengePage() {
   }, [isHydrated, router]);
 
   function handleMarkComplete() {
-    if (!activeChallenge || isCompleting) return;
+    if (!activeChallenge) return;
 
-    setIsCompleting(true);
     const challengeId = String(activeChallenge.id);
-    markChallengeCompleted(challengeId);
-    setShowToast(true);
-
-    const userLevel = getUserLevel();
-    const levelNumber = userLevel?.levelNumber ?? 1;
-    const isFinalById = isFinalChallengeInLevel(levelNumber, challengeId);
-    // Fallback: if all challenges for this level are now complete (and not in practice mode), show graduation
-    const completedIds = getCompletedChallengeIds();
-    const nextIncomplete = getFirstIncompleteChallenge(levelNumber, completedIds);
-    const allCompleteForLevel =
-      nextIncomplete === null && !isPracticeModeForLevel(levelNumber);
-    const shouldShowGraduation = isFinalById || allCompleteForLevel;
-
-    setTimeout(() => {
-      if (shouldShowGraduation) {
-        router.push("/dashboard/graduation");
-      } else {
-        router.push("/dashboard");
-      }
-    }, 1500);
+    router.push(`/challenge/feedback?challengeId=${encodeURIComponent(challengeId)}`);
   }
 
   if (!isHydrated) {
     return (
       <div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-6">
-        <p className="text-ink-muted">Loading...</p>
+        <p className="text-gray-700">Loading...</p>
       </div>
     );
   }
@@ -105,12 +81,12 @@ export default function ChallengePage() {
   if (!activeChallenge) {
     return (
       <div className="min-h-[calc(100vh-80px)] flex flex-col items-center justify-center px-6">
-        <p className="text-ink-muted text-center mb-6">
+        <p className="text-gray-700 text-center mb-6">
           You&apos;ve completed all challenges for your level. Great progress!
         </p>
         <Link
           href="/dashboard"
-          className="text-accent-600 font-medium hover:text-accent-700 focus-visible:underline"
+          className="text-black font-semibold hover:underline focus-visible:underline"
         >
           ← Back to Dashboard
         </Link>
@@ -126,14 +102,14 @@ export default function ChallengePage() {
         {/* Back to Dashboard */}
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-ink-muted hover:text-ink text-sm font-medium mb-8 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 focus-visible:rounded"
+          className="inline-flex items-center gap-2 text-gray-700 hover:text-black text-sm font-semibold mb-8 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:rounded"
         >
           <span aria-hidden>←</span>
           Back to Dashboard
         </Link>
 
         {/* Micro-copy above toggle */}
-        <p className="text-ink-muted text-sm mb-4">
+        <p className="text-gray-700 text-sm mb-4">
           You are in control. Choose the level that feels right for you today.
         </p>
 
@@ -141,7 +117,7 @@ export default function ChallengePage() {
         <div
           role="group"
           aria-label="Challenge difficulty"
-          className="flex rounded-lg border-2 border-brand-200 bg-surface-muted p-1 mb-8"
+          className="flex rounded-xl border-2 border-black bg-white p-1 mb-8 shadow-neo-sm"
         >
           {DIFFICULTY_OPTIONS.map((opt) => (
             <button
@@ -150,13 +126,13 @@ export default function ChallengePage() {
               onClick={() => setDifficulty(opt.value)}
               className={`
                 flex-1 min-h-[44px] px-4 py-2.5
-                text-sm font-medium rounded-md
+                text-sm font-semibold rounded-lg
                 transition-all duration-200 ease-out
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2
                 ${
                   difficulty === opt.value
-                    ? "bg-accent-100 text-accent-700 border border-accent-300 shadow-soft"
-                    : "bg-transparent text-ink-muted hover:text-ink hover:bg-brand-100 border border-transparent"
+                    ? "bg-purple-200 text-black border-2 border-black shadow-neo-xs"
+                    : "bg-transparent text-gray-700 hover:text-black hover:bg-amber-100 border-2 border-transparent"
                 }
               `}
               aria-pressed={difficulty === opt.value}
@@ -169,25 +145,26 @@ export default function ChallengePage() {
         {/* Challenge Display Card */}
         <div
           className="
-            w-full rounded-lg
-            border-2 border-brand-200
-            bg-accent-50/40
-            shadow-soft
+            w-full rounded-2xl
+            border-4 border-black
+            bg-white
+            shadow-neo-lg
             px-6 py-6
+            transition-all hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-neo-sm
           "
           role="region"
           aria-labelledby="challenge-title"
         >
           <h1
             id="challenge-title"
-            className="text-xl font-semibold text-ink mb-4"
+            className="text-xl font-semibold tracking-tight text-black mb-4"
           >
             {activeChallenge.title}
           </h1>
 
           <div
             key={`${activeChallenge.id}-${difficulty}`}
-            className="min-h-[80px] text-ink leading-relaxed animate-challenge-fade"
+            className="min-h-[80px] text-black leading-relaxed animate-challenge-fade"
           >
             {challengeText}
           </div>
@@ -196,41 +173,23 @@ export default function ChallengePage() {
           <button
             type="button"
             onClick={handleMarkComplete}
-            disabled={isCompleting}
             className="
               w-full min-h-[52px] mt-6
               px-6 py-4
-              border-2 border-accent-500
-              bg-accent-500 text-white
-              font-medium rounded-lg
-              transition-all duration-150
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2
-              disabled:opacity-70 disabled:cursor-not-allowed
-              hover:enabled:bg-accent-600 hover:enabled:border-accent-600
+              border-2 border-black
+              bg-black text-white
+              font-semibold rounded-xl
+              shadow-neo-sm
+              transition-all
+              hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-neo-xs
+              active:translate-x-[4px] active:translate-y-[4px] active:shadow-none
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2
             "
           >
-            {isCompleting ? "Completed!" : "Mark as Complete"}
+            Mark as Complete
           </button>
         </div>
       </div>
-
-      {/* Toast */}
-      {showToast && (
-        <div
-          role="status"
-          aria-live="polite"
-          className="
-            fixed bottom-8 left-1/2 -translate-x-1/2
-            px-6 py-4
-            bg-accent-600 text-white
-            rounded-lg shadow-card
-            text-sm font-medium
-            animate-toast-in
-          "
-        >
-          Great job taking a step!
-        </div>
-      )}
     </div>
   );
 }

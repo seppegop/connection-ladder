@@ -15,22 +15,23 @@ export function ActiveChallengeCard({
     <div
       className="
         w-full max-w-2xl mx-auto
-        rounded-lg
-        border-2 border-brand-200
-        bg-surface
-        shadow-soft
+        rounded-2xl
+        border-4 border-black
+        bg-white
+        shadow-neo-lg
         px-6 py-5
+        transition-all hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-neo-sm cursor-pointer
       "
       role="region"
       aria-labelledby="active-challenge-title"
     >
       <h2
         id="active-challenge-title"
-        className="text-lg font-medium text-ink mb-1"
+        className="text-lg font-semibold tracking-tight text-black mb-1"
       >
         {title}
       </h2>
-      <p className="text-sm text-ink-muted mb-4">
+      <p className="text-sm text-gray-700 mb-4">
         You control the difficulty.
       </p>
       <Link
@@ -38,13 +39,15 @@ export function ActiveChallengeCard({
         className="
           inline-flex items-center justify-center
           min-h-[48px] px-6
-          border-2 border-accent-500
-          bg-accent-500 text-white
-          font-medium
-          rounded-lg
-          transition-colors duration-150
-          hover:bg-accent-600 hover:border-accent-600
-          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2
+          border-2 border-black
+          bg-black text-white
+          font-semibold
+          rounded-xl
+          shadow-neo-sm
+          transition-all
+          hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-neo-xs
+          active:translate-x-[4px] active:translate-y-[4px] active:shadow-none
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2
         "
       >
         View Challenge

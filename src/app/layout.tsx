@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const dmSans = DM_Sans({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} font-sans antialiased`}>
         {/* Skip to main content — accessibility requirement */}
         <a href="#main-content" className="skip-link">
           Skip to main content

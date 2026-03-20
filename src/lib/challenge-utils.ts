@@ -10,14 +10,50 @@ import {
   setCompletedChallengeIds,
   addCompletedChallenge,
   addPracticeLevel,
+  addChallengeToHistory as addChallengeToHistoryStorage,
+  getChallengeHistory as getChallengeHistoryStorage,
   createNewUser,
   setCurrentUser,
   setUserName,
   type StoredLevel,
+  type ChallengeHistoryEntry,
 } from "@/lib/user-data";
 
 // Re-export for consumers
-export type { StoredLevel } from "@/lib/user-data";
+export type { StoredLevel, ChallengeHistoryEntry } from "@/lib/user-data";
+
+/** Find a challenge by ID across all levels */
+export function findChallengeById(challengeId: string): { title: string } | null {
+  for (const level of challengeData.levels) {
+    const challenge = level.challenges.find(
+      (c) => String(c.id) === String(challengeId)
+    );
+    if (challenge) return { title: challenge.title };
+  }
+  return null;
+}
+
+/** Add a completed challenge with feedback to history */
+export function addChallengeToHistory(
+  challengeId: string,
+  title: string,
+  emoji: string
+): void {
+  migrateFromLegacyIfNeeded();
+  addChallengeToHistoryStorage({
+    challengeId,
+    title,
+    emoji,
+    timestamp: new Date().toISOString(),
+  });
+}
+
+/** Get challenge history — returns real data only (empty array when none) */
+export function getChallengeHistory(): ChallengeHistoryEntry[] {
+  if (typeof window === "undefined") return [];
+  migrateFromLegacyIfNeeded();
+  return getChallengeHistoryStorage();
+}
 
 // Legacy keys - used only for migration from old storage
 const LEGACY_KEY_LEVEL = "connection-ladder-user-level";
@@ -102,6 +138,34 @@ export function getCompletedChallengeIds(): string[] {
 export function markChallengeCompleted(challengeId: string): void {
   migrateFromLegacyIfNeeded();
   addCompletedChallenge(challengeId);
+}
+
+/** Get stored feedback for a challenge (mock: returns stored emotion or null) */
+export function getChallengeFeedback(challengeId: string): string | null {
+  if (typeof window === "undefined") return null;
+  migrateFromLegacyIfNeeded();
+  try {
+    const stored = localStorage.getItem("connection-ladder-feedback");
+    if (!stored) return null;
+    const parsed = JSON.parse(stored) as Record<string, string>;
+    return parsed[challengeId] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** Store feedback emotion for a challenge (mock: persists to localStorage) */
+export function storeChallengeFeedback(challengeId: string, emotion: string): void {
+  if (typeof window === "undefined") return;
+  migrateFromLegacyIfNeeded();
+  try {
+    const stored = localStorage.getItem("connection-ladder-feedback");
+    const parsed: Record<string, string> = stored ? JSON.parse(stored) : {};
+    parsed[challengeId] = emotion;
+    localStorage.setItem("connection-ladder-feedback", JSON.stringify(parsed));
+  } catch {
+    // Ignore storage errors
+  }
 }
 
 /** Get challenges for the user's level (Level 1 → index 0, etc.) */

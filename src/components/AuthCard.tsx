@@ -26,11 +26,12 @@ export function AuthCard({
     <div
       className={`
         w-full max-w-md mx-auto
-        rounded-lg
-        border border-brand-200
-        bg-surface
-        shadow-soft
+        rounded-2xl
+        border-4 border-black
+        bg-white
+        shadow-neo-lg
         px-6 py-8
+        transition-all hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-neo-sm
         ${className}
       `}
       role="region"
@@ -39,13 +40,13 @@ export function AuthCard({
       {title && (
         <h2
           id="auth-card-title"
-          className="text-xl font-medium text-ink mb-1"
+          className="text-xl font-semibold tracking-tight text-black mb-1"
         >
           {title}
         </h2>
       )}
       {description && (
-        <p className="text-ink-muted text-sm mb-6">{description}</p>
+        <p className="text-gray-800 text-sm mb-6">{description}</p>
       )}
       {children}
     </div>

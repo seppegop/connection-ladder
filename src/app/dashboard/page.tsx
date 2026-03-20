@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { ProgressTrack, type ProgressNode } from "@/components/dashboard/ProgressTrack";
 import { ActiveChallengeCard } from "@/components/dashboard/ActiveChallengeCard";
-import { RecentBadges } from "@/components/dashboard/RecentBadges";
+import { ConfidenceSnapshot } from "@/components/dashboard/ConfidenceSnapshot";
 import {
   type StoredLevel,
   getUserLevel,
@@ -15,7 +15,6 @@ import {
   getUserName,
   setActiveUser,
 } from "@/lib/challenge-utils";
-import { exportUserDataAsJson } from "@/lib/user-data";
 
 const NODE_LABELS = [
   "Say hello",
@@ -36,14 +35,6 @@ function buildNodes(currentNodeIndex: number): ProgressNode[] {
         : i === currentNodeIndex
           ? "current"
           : "future",
-  }));
-}
-
-function buildBadges(completedCount: number) {
-  return Array.from({ length: completedCount }, (_, i) => ({
-    id: `badge-${i}`,
-    label: NODE_LABELS[i] ?? "Step",
-    iconIndex: i,
   }));
 }
 
@@ -78,7 +69,6 @@ export default function DashboardPage() {
   const completedCount = getCompletedCountForLevel(levelNumber, completedIds);
   const currentNodeIndex = completedCount;
   const nodes = buildNodes(currentNodeIndex);
-  const badges = buildBadges(currentNodeIndex);
 
   const firstIncomplete = getFirstIncompleteChallenge(levelNumber, completedIds);
   const challengeTitle = firstIncomplete
@@ -92,7 +82,7 @@ export default function DashboardPage() {
         streakCount={3}
       />
       <div
-        className="min-h-screen pt-[72px] pb-12 px-6"
+        className="min-h-screen pt-[72px] pb-12 px-6 bg-[#FDFBF7]"
       >
         <div className="max-w-2xl mx-auto">
           {/* Progress track (the ladder) */}
@@ -106,30 +96,8 @@ export default function DashboardPage() {
             />
           </div>
 
-          {/* Recent badges */}
-          <RecentBadges badges={badges} />
-
-          {/* Export progress */}
-          <div className="mt-10 text-center">
-            <button
-              type="button"
-              onClick={() => {
-                const json = exportUserDataAsJson();
-                const blob = new Blob([json], {
-                  type: "application/json",
-                });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = `connection-ladder-progress-${new Date().toISOString().slice(0, 10)}.json`;
-                a.click();
-                URL.revokeObjectURL(url);
-              }}
-              className="text-sm text-ink-muted hover:text-accent-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 focus-visible:rounded transition-colors"
-            >
-              Export my progress
-            </button>
-          </div>
+          {/* Confidence Snapshot — emotional feedback timeline */}
+          <ConfidenceSnapshot />
         </div>
       </div>
     </>

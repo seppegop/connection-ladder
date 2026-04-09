@@ -77,10 +77,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      <DashboardHeader
-        userName={userName ?? undefined}
-        streakCount={3}
-      />
+      <DashboardHeader userName={userName ?? undefined} />
       <div
         className="min-h-screen pt-[72px] pb-12 px-6 bg-[#FDFBF7]"
       >

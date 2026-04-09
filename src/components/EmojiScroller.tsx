@@ -105,16 +105,22 @@ export function EmojiScroller({ value, onChange }: EmojiScrollerProps) {
             w-full h-3 appearance-none
             bg-gray-200 rounded-full
             [&::-webkit-slider-thumb]:appearance-none
-            [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6
+            [&::-webkit-slider-thumb]:box-border
+            [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6
+            [&::-webkit-slider-thumb]:min-h-6 [&::-webkit-slider-thumb]:min-w-6
             [&::-webkit-slider-thumb]:rounded-full
             [&::-webkit-slider-thumb]:bg-black
-            [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-black
+            [&::-webkit-slider-thumb]:border-0
+            [&::-webkit-slider-thumb]:shadow-none
             [&::-webkit-slider-thumb]:cursor-pointer
-            [&::-webkit-slider-thumb]:shadow-neo-sm
-            [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6
+            [&::-webkit-slider-thumb]:-mt-1.5
+            [&::-moz-range-thumb]:box-border
+            [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:w-6
+            [&::-moz-range-thumb]:min-h-6 [&::-moz-range-thumb]:min-w-6
             [&::-moz-range-thumb]:rounded-full
             [&::-moz-range-thumb]:bg-black
-            [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-black
+            [&::-moz-range-thumb]:border-0
+            [&::-moz-range-thumb]:shadow-none
             [&::-moz-range-thumb]:cursor-pointer
           "
           aria-label="Select how you felt"
